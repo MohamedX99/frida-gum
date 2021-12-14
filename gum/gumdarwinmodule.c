@@ -311,6 +311,9 @@ G_DEFINE_TYPE_EXTENDED (GumDarwinModule,
                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
                             gum_darwin_module_initable_iface_init))
 
+G_DEFINE_BOXED_TYPE (GumDarwinModuleImage, gum_darwin_module_image,
+                     gum_darwin_module_image_dup, gum_darwin_module_image_free)
+
 static void
 gum_darwin_module_class_init (GumDarwinModuleClass * klass)
 {

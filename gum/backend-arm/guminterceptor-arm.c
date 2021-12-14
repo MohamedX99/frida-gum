@@ -210,7 +210,7 @@ _gum_interceptor_backend_create_trampoline (GumInterceptorBackend * self,
         dedicated);
     if (ctx->trampoline_deflector == NULL)
     {
-      gum_code_slice_free (ctx->trampoline_slice);
+      gum_code_slice_unref (ctx->trampoline_slice);
       ctx->trampoline_slice = NULL;
       return FALSE;
     }
@@ -234,7 +234,7 @@ _gum_interceptor_backend_create_trampoline (GumInterceptorBackend * self,
         dedicated);
     if (ctx->trampoline_deflector == NULL)
     {
-      gum_code_slice_free (ctx->trampoline_slice);
+      gum_code_slice_unref (ctx->trampoline_slice);
       ctx->trampoline_slice = NULL;
       return FALSE;
     }
@@ -464,8 +464,8 @@ void
 _gum_interceptor_backend_destroy_trampoline (GumInterceptorBackend * self,
                                              GumFunctionContext * ctx)
 {
-  gum_code_slice_free (ctx->trampoline_slice);
-  gum_code_deflector_free (ctx->trampoline_deflector);
+  gum_code_slice_unref (ctx->trampoline_slice);
+  gum_code_deflector_unref (ctx->trampoline_deflector);
   ctx->trampoline_slice = NULL;
   ctx->trampoline_deflector = NULL;
 }
@@ -597,7 +597,7 @@ gum_interceptor_backend_create_thunks (GumInterceptorBackend * self)
 static void
 gum_interceptor_backend_destroy_thunks (GumInterceptorBackend * self)
 {
-  gum_code_slice_free (self->thunks);
+  gum_code_slice_unref (self->thunks);
 }
 
 static void

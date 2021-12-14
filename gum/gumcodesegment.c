@@ -1,10 +1,14 @@
 /*
- * Copyright (C) 2016-2019 Ole André Vadla Ravnås <oleavr@nowsecure.com>
+ * Copyright (C) 2016-2021 Ole André Vadla Ravnås <oleavr@nowsecure.com>
  *
  * Licence: wxWindows Library Licence, Version 3.1
  */
 
 #include "gumcodesegment.h"
+
+/**
+ * GumCodeSegment: (skip)
+ */
 
 #ifndef HAVE_DARWIN
 

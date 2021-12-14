@@ -126,7 +126,7 @@ static GPrivate gum_internal_thread_details_key = G_PRIVATE_INIT (
 static GumInterceptor * gum_cached_interceptor = NULL;
 
 G_DEFINE_BOXED_TYPE (GumAddress, gum_address, gum_address_copy,
-    gum_address_free)
+                     gum_address_free)
 
 void
 gum_init (void)

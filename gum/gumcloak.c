@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017-2019 Ole André Vadla Ravnås <oleavr@nowsecure.com>
+ * Copyright (C) 2017-2021 Ole André Vadla Ravnås <oleavr@nowsecure.com>
  *
  * Licence: wxWindows Library Licence, Version 3.1
  */
@@ -107,6 +107,14 @@ gum_cloak_has_thread (GumThreadId id)
   return result;
 }
 
+/**
+ * gum_cloak_enumerate_threads:
+ * @func: (scope call): function called with each #GumThreadId
+ * @user_data: data to pass to @func
+ *
+ * Enumerates all currently cloaked threads, calling @func with each
+ * #GumThreadId.
+ */
 void
 gum_cloak_enumerate_threads (GumCloakFoundThreadFunc func,
                              gpointer user_data)
@@ -288,6 +296,15 @@ gum_cloak_remove_range_unlocked (const GumMemoryRange * range)
   while (found_match);
 }
 
+/**
+ * gum_cloak_clip_range:
+ * @range: range to determine the uncloaked parts of
+ *
+ * Determines how much of a given range is currently uncloaked. May return an
+ * empty array if the entire range is cloaked.
+ *
+ * Returns: (transfer full) (element-type Gum.MemoryRange): uncloaked parts
+ */
 GArray *
 gum_cloak_clip_range (const GumMemoryRange * range)
 {
@@ -410,6 +427,14 @@ gum_cloak_clip_range (const GumMemoryRange * range)
   return chunks;
 }
 
+/**
+ * gum_cloak_enumerate_ranges:
+ * @func: (scope call): function called with each #GumMemoryRange
+ * @user_data: data to pass to @func
+ *
+ * Enumerates all currently cloaked memory ranges, calling @func with each
+ * #GumMemoryRange.
+ */
 void
 gum_cloak_enumerate_ranges (GumCloakFoundRangeFunc func,
                             gpointer user_data)
@@ -495,6 +520,14 @@ gum_cloak_has_file_descriptor (gint fd)
   return result;
 }
 
+/**
+ * gum_cloak_enumerate_file_descriptors:
+ * @func: (scope call): function called with each file descriptor
+ * @user_data: data to pass to @func
+ *
+ * Enumerates all currently cloaked file descriptors, calling @func with each
+ * file descriptor.
+ */
 void
 gum_cloak_enumerate_file_descriptors (GumCloakFoundFDFunc func,
                                       gpointer user_data)

@@ -18,7 +18,7 @@ struct _GumCallbackEventSink
   GumEventType mask;
   GumEventSinkCallback callback;
   gpointer data;
-  GDestroyNotify data_destroy;
+  GDestroyNotify destroy_data;
 };
 
 static void gum_default_event_sink_iface_init (gpointer g_iface,
@@ -104,17 +104,35 @@ gum_event_sink_stop (GumEventSink * self)
     iface->stop (self);
 }
 
+/**
+ * gum_event_sink_make_default:
+ *
+ * Creates a default #GumEventSink that throws away any events directed at it.
+ *
+ * Returns: (transfer full): a newly created #GumEventSink
+ */
 GumEventSink *
 gum_event_sink_make_default (void)
 {
   return g_object_new (GUM_TYPE_DEFAULT_EVENT_SINK, NULL);
 }
 
+/**
+ * gum_event_sink_make_from_callback:
+ * @mask: bitfield specifying event types that are of interest
+ * @callback: (not nullable): function called with each event
+ * @data: data to pass to @callback
+ * @destroy_data: (destroy data): function to destroy @data
+ *
+ * Creates a #GumEventSink that delivers events to @callback.
+ *
+ * Returns: (transfer full): a newly created #GumEventSink
+ */
 GumEventSink *
 gum_event_sink_make_from_callback (GumEventType mask,
                                    GumEventSinkCallback callback,
                                    gpointer data,
-                                   GDestroyNotify data_destroy)
+                                   GDestroyNotify destroy_data)
 {
   GumCallbackEventSink * sink;
 
@@ -122,7 +140,7 @@ gum_event_sink_make_from_callback (GumEventType mask,
   sink->mask = mask;
   sink->callback = callback;
   sink->data = data;
-  sink->data_destroy = data_destroy;
+  sink->destroy_data = destroy_data;
 
   return GUM_EVENT_SINK (sink);
 }
@@ -188,8 +206,8 @@ gum_callback_event_sink_finalize (GObject * object)
 {
   GumCallbackEventSink * self = GUM_CALLBACK_EVENT_SINK (object);
 
-  if (self->data_destroy != NULL)
-    self->data_destroy (self->data);
+  if (self->destroy_data != NULL)
+    self->destroy_data (self->data);
 
   G_OBJECT_CLASS (gum_callback_event_sink_parent_class)->finalize (object);
 }

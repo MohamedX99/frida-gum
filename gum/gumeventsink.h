@@ -48,7 +48,7 @@ GUM_API void gum_event_sink_stop (GumEventSink * self);
 
 GUM_API GumEventSink * gum_event_sink_make_default (void);
 GUM_API GumEventSink * gum_event_sink_make_from_callback (GumEventType mask,
-    GumEventSinkCallback callback, gpointer data, GDestroyNotify data_destroy);
+    GumEventSinkCallback callback, gpointer data, GDestroyNotify destroy_data);
 
 G_END_DECLS
 

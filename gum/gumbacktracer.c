@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2018 Ole André Vadla Ravnås <oleavr@nowsecure.com>
+ * Copyright (C) 2008-2021 Ole André Vadla Ravnås <oleavr@nowsecure.com>
  * Copyright (C) 2021 Francesco Tamagni <mrmacete@protonmail.ch>
  *
  * Licence: wxWindows Library Licence, Version 3.1
@@ -33,6 +33,15 @@ gum_backtracer_default_init (GumBacktracerInterface * iface)
 {
 }
 
+/**
+ * gum_backtracer_make_accurate:
+ *
+ * Creates an accurate #GumBacktracer. The accurate kind of backtracers rely on
+ * debugger-friendly binaries or presence of debug information to do a good job.
+ *
+ * Returns: (nullable) (transfer full): a newly created #GumBacktracer, or %NULL
+ * if an accurate backtracer is not available
+ */
 GumBacktracer *
 gum_backtracer_make_accurate (void)
 {
@@ -52,6 +61,16 @@ gum_backtracer_make_accurate (void)
 #endif
 }
 
+/**
+ * gum_backtracer_make_fuzzy:
+ *
+ * Creates a fuzzy #GumBacktracer. The fuzzy kind of backtracers perform
+ * forensics on the stack in order to guess the return addresses, which means
+ * you will get false positives, but it will work on any binary.
+ *
+ * Returns: (nullable) (transfer full): a newly created #GumBacktracer, or %NULL
+ * if a fuzzy backtracer is not available
+ */
 GumBacktracer *
 gum_backtracer_make_fuzzy (void)
 {
