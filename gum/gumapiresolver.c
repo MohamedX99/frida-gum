@@ -5,11 +5,13 @@
  */
 
 /**
- * ApiResolver:
+ * GumApiResolver:
  *
  * Resolves query strings into memory locations where matching functions reside.
  *
- * ## Using `ApiResolver`
+ * ## Using `GumApiResolver`
+ *
+ * ### Exports and imports
  *
  * ```c
  * void
@@ -17,17 +19,52 @@
  * {
  *   g_autoptr(ApiResolver) resolver = gum_api_resolver_make ("module");
  *
- *   gum_api_resolver_enumerate_matches (resolver, "exports:libc.so!open*",
- *                                       instrument_libc_open, NULL, NULL);
+ *   gum_api_resolver_enumerate_matches (resolver,
+ *                                       "exports:libc*.so!open*",
+ *                                       // or: "imports:example.so!open*",
+ *                                       instrument_c_function,
+ *                                       NULL,
+ *                                       NULL);
  * }
  *
  * static gboolean
- * instrument_libc_open (const GumApiDetails *details,
- *                       gpointer user_data)
+ * instrument_c_function (const GumApiDetails *details,
+ *                        gpointer user_data)
  * {
  *   g_print ("Found %s at %" G_GINT64_MODIFIER "x\n",
  *            details->name,
  *            details->address);
+ *   // e.g.: "Found /system/lib/libc.so at 0x7fff870135c9"
+ *
+ *   return TRUE; // keep enumerating
+ * }
+ * ```
+ *
+ * ### Objective-C methods
+ *
+ * ```c
+ * void
+ * start (void)
+ * {
+ *   g_autoptr(ApiResolver) resolver = gum_api_resolver_make ("objc");
+ *
+ *   gum_api_resolver_enumerate_matches (resolver,
+ *                                       "-[NSURL* *HTTP*]",
+ *                                       instrument_objc_method,
+ *                                       NULL,
+ *                                       NULL);
+ * }
+ *
+ * static gboolean
+ * instrument_objc_method (const GumApiDetails *details,
+ *                         gpointer user_data)
+ * {
+ *   g_print ("Found %s at %" G_GINT64_MODIFIER "x\n",
+ *            details->name,
+ *            details->address);
+ *   // e.g.: "Found -[NSURLRequest valueForHTTPHeaderField:] at 0x7fff94183e22"
+ *
+ *   return TRUE; // keep enumerating
  * }
  * ```
  */
