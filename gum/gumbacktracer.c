@@ -5,6 +5,28 @@
  * Licence: wxWindows Library Licence, Version 3.1
  */
 
+/**
+ * GumBacktracer:
+ *
+ * Generates a backtrace by walking a thread's native stack.
+ *
+ * ## Using `GumBacktracer`
+ *
+ * ```c
+ * g_autoptr(GumBacktracer) backtracer = gum_backtracer_make_accurate ();
+ *                                               // or: make_fuzzy
+ *
+ * GumCpuContext *cpu_context = NULL; // walk from here
+ * GumReturnAddressArray retaddrs;
+ * gum_backtracer_generate (backtracer, cpu_context, &retaddrs);
+ *
+ * for (guint i = 0; i != retaddrs.len; i++)
+ * {
+ *   g_print ("retaddrs[%u] = %p\n", i, retaddrs->items[i]);
+ * }
+ * ```
+ */
+
 #include "gumbacktracer.h"
 
 #ifdef HAVE_WINDOWS
@@ -36,11 +58,12 @@ gum_backtracer_default_init (GumBacktracerInterface * iface)
 /**
  * gum_backtracer_make_accurate:
  *
- * Creates an accurate #GumBacktracer. The accurate kind of backtracers rely on
- * debugger-friendly binaries or presence of debug information to do a good job.
+ * Creates a new accurate backtracer, optimized for debugger-friendly binaries
+ * or presence of debug information. Resulting backtraces will never contain
+ * bogus entries but may be cut short when encountering code built without
+ * frame pointers *and* lack of debug information.
  *
- * Returns: (nullable) (transfer full): a newly created #GumBacktracer, or %NULL
- * if an accurate backtracer is not available
+ * Returns: (nullable) (transfer full): the newly created backtracer instance
  */
 GumBacktracer *
 gum_backtracer_make_accurate (void)
@@ -64,12 +87,13 @@ gum_backtracer_make_accurate (void)
 /**
  * gum_backtracer_make_fuzzy:
  *
- * Creates a fuzzy #GumBacktracer. The fuzzy kind of backtracers perform
- * forensics on the stack in order to guess the return addresses, which means
- * you will get false positives, but it will work on any binary.
+ * Creates a new fuzzy backtracer, optimized for debugger-unfriendly binaries
+ * that lack debug information. Performs forensics on the stack in order to
+ * guess the return addresses. Resulting backtraces will often contain bogus
+ * entries, but will never be cut short upon encountering code built without
+ * frame pointers *and* lack of debug information.
  *
- * Returns: (nullable) (transfer full): a newly created #GumBacktracer, or %NULL
- * if a fuzzy backtracer is not available
+ * Returns: (nullable) (transfer full): the newly created backtracer instance
  */
 GumBacktracer *
 gum_backtracer_make_fuzzy (void)
