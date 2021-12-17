@@ -17,7 +17,7 @@
  * void
  * start (void)
  * {
- *   g_autoptr(ApiResolver) resolver = gum_api_resolver_make ("module");
+ *   g_autoptr(GumApiResolver) resolver = gum_api_resolver_make ("module");
  *
  *   gum_api_resolver_enumerate_matches (resolver,
  *                                       "exports:libc*.so!open*",
@@ -47,7 +47,7 @@
  * void
  * start (void)
  * {
- *   g_autoptr(ApiResolver) resolver = gum_api_resolver_make ("objc");
+ *   g_autoptr(GumApiResolver) resolver = gum_api_resolver_make ("objc");
  *
  *   gum_api_resolver_enumerate_matches (resolver,
  *                                       "-[NSURL* *HTTP*]",
@@ -90,7 +90,7 @@ gum_api_resolver_default_init (GumApiResolverInterface * iface)
  * gum_api_resolver_make:
  * @type: (not nullable): the resolver type to make
  *
- * Makes an API resolver of the given @type. Available resolvers:
+ * Creates a new resolver of the given @type. Available resolvers:
  *
  *  - `module`: Resolves exported and imported functions of shared libraries
  *    currently loaded. Always available.
