@@ -7,7 +7,7 @@
 /**
  * GumApiResolver:
  *
- * Resolves query strings into memory locations where matching functions reside.
+ * Resolves in-memory APIs by name, with globs permitted.
  *
  * ## Using `GumApiResolver`
  *
@@ -21,7 +21,8 @@
  *
  *   gum_api_resolver_enumerate_matches (resolver,
  *                                       "exports:libc*.so!open*",
- *                                       // or: "imports:example.so!open*",
+ *                                       // case-insensitive: "exports:*!open/i"
+ *                                       // imports: "imports:example.so!open*"
  *                                       instrument_c_function,
  *                                       NULL,
  *                                       NULL);
@@ -87,12 +88,9 @@ gum_api_resolver_default_init (GumApiResolverInterface * iface)
 
 /**
  * gum_api_resolver_make:
- * @type: the resolver type to make
+ * @type: (not nullable): the resolver type to make
  *
- * Makes an API resolver of the given @type, allowing you to quickly find
- * functions by name, with globs permitted. Precisely which resolvers are
- * available depends on the current platform and runtimes loaded in the current
- * process. Available resolvers are currently:
+ * Makes an API resolver of the given @type. Available resolvers:
  *
  *  - `module`: Resolves exported and imported functions of shared libraries
  *    currently loaded. Always available.
@@ -123,8 +121,8 @@ gum_api_resolver_make (const gchar * type)
 /**
  * gum_api_resolver_enumerate_matches:
  * @self: a resolver
- * @query: the query to perform
- * @func: (scope call): the function called with each match
+ * @query: (not nullable): the query to perform
+ * @func: (not nullable) (scope call): the function called with each match
  * @user_data: (nullable): the data to pass to @func
  * @error: (nullable): return location for a #GError
  *
