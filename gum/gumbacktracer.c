@@ -8,7 +8,7 @@
 /**
  * GumBacktracer:
  *
- * Generates a backtrace by walking a thread's native stack.
+ * Generates a backtrace by walking a thread's stack.
  *
  * ## Using `GumBacktracer`
  *
@@ -111,6 +111,15 @@ gum_backtracer_make_fuzzy (void)
 #endif
 }
 
+/**
+ * gum_backtracer_generate:
+ * @self: a backtracer
+ * @cpu_context: (nullable): the location to start walking from
+ * @return_addresses: (out caller-allocates) (not optional): the result
+ *
+ * Walks a thread's stack and stores each return address in @return_addresses.
+ * Omit @cpu_context to start walking from where this function is called from.
+ */
 void
 gum_backtracer_generate (GumBacktracer * self,
                          const GumCpuContext * cpu_context,
@@ -120,6 +129,17 @@ gum_backtracer_generate (GumBacktracer * self,
       GUM_MAX_BACKTRACE_DEPTH);
 }
 
+/**
+ * gum_backtracer_generate_with_limit:
+ * @self: a backtracer
+ * @cpu_context: (nullable): the location to start walking from
+ * @return_addresses: (out caller-allocates) (not optional): the result
+ * @limit: the limit on how far to walk
+ *
+ * Walks a thread's stack and stores each return address in @return_addresses,
+ * stopping after @limit entries. Omit @cpu_context to start walking from where
+ * this function is called from.
+ */
 void
 gum_backtracer_generate_with_limit (GumBacktracer * self,
                                     const GumCpuContext * cpu_context,
@@ -130,6 +150,5 @@ gum_backtracer_generate_with_limit (GumBacktracer * self,
 
   g_assert (iface->generate != NULL);
 
-  iface->generate (self, cpu_context, return_addresses,
-      limit);
+  iface->generate (self, cpu_context, return_addresses, limit);
 }
