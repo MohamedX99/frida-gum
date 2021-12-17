@@ -115,7 +115,8 @@ gum_backtracer_make_fuzzy (void)
  * gum_backtracer_generate:
  * @self: a backtracer
  * @cpu_context: (nullable): the location to start walking from
- * @return_addresses: (out caller-allocates) (not optional): the result
+ * @return_addresses: (out caller-allocates) (not optional): the resulting
+ *   backtrace
  *
  * Walks a thread's stack and stores each return address in @return_addresses.
  * Omit @cpu_context to start walking from where this function is called from.
@@ -133,7 +134,8 @@ gum_backtracer_generate (GumBacktracer * self,
  * gum_backtracer_generate_with_limit:
  * @self: a backtracer
  * @cpu_context: (nullable): the location to start walking from
- * @return_addresses: (out caller-allocates) (not optional): the result
+ * @return_addresses: (out caller-allocates) (not optional): the resulting
+ *   backtrace
  * @limit: the limit on how far to walk
  *
  * Walks a thread's stack and stores each return address in @return_addresses,
