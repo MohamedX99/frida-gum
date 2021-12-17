@@ -124,7 +124,7 @@ gum_api_resolver_make (const gchar * type)
  * @query: (not nullable): the query to perform
  * @func: (not nullable) (scope call): the function called with each match
  * @user_data: (nullable): the data to pass to @func
- * @error: (nullable): return location for a #GError
+ * @error: the return location for a #GError
  *
  * Performs the resolver-specific @query, optionally suffixed with `/i` to
  * perform case-insensitive matching. Calls @func with each match found.
