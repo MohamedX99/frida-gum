@@ -392,7 +392,7 @@ gum_cloak_remove_range_unlocked (const GumMemoryRange * range)
 
 /**
  * gum_cloak_clip_range:
- * @range: range to determine the visible parts of
+ * @range: the range to determine the visible parts of
  *
  * Determines how much of the given memory `range` is currently visible.
  * May return an empty array if the entire range is cloaked.
@@ -523,7 +523,7 @@ gum_cloak_clip_range (const GumMemoryRange * range)
 
 /**
  * gum_cloak_enumerate_ranges:
- * @func: (not nullable) (scope call): function called with each range
+ * @func: (not nullable) (scope call): function called with each memory range
  * @user_data: (nullable): data to pass to `func`
  *
  * Enumerates all currently cloaked memory ranges, calling `func` with each.
