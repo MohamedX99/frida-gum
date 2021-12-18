@@ -18,7 +18,7 @@ struct _GumCallbackEventSink
   GumEventType mask;
   GumEventSinkCallback callback;
   gpointer data;
-  GDestroyNotify destroy_data;
+  GDestroyNotify data_destroy;
 };
 
 static void gum_default_event_sink_iface_init (gpointer g_iface,
@@ -122,7 +122,7 @@ gum_event_sink_make_default (void)
  * @mask: bitfield specifying event types that are of interest
  * @callback: (not nullable): function called with each event
  * @data: data to pass to @callback
- * @destroy_data: (destroy data): function to destroy @data
+ * @data_destroy: (destroy data): function to destroy @data
  *
  * Creates a #GumEventSink that delivers events to @callback.
  *
@@ -132,7 +132,7 @@ GumEventSink *
 gum_event_sink_make_from_callback (GumEventType mask,
                                    GumEventSinkCallback callback,
                                    gpointer data,
-                                   GDestroyNotify destroy_data)
+                                   GDestroyNotify data_destroy)
 {
   GumCallbackEventSink * sink;
 
@@ -140,7 +140,7 @@ gum_event_sink_make_from_callback (GumEventType mask,
   sink->mask = mask;
   sink->callback = callback;
   sink->data = data;
-  sink->destroy_data = destroy_data;
+  sink->data_destroy = data_destroy;
 
   return GUM_EVENT_SINK (sink);
 }
@@ -206,8 +206,8 @@ gum_callback_event_sink_finalize (GObject * object)
 {
   GumCallbackEventSink * self = GUM_CALLBACK_EVENT_SINK (object);
 
-  if (self->destroy_data != NULL)
-    self->destroy_data (self->data);
+  if (self->data_destroy != NULL)
+    self->data_destroy (self->data);
 
   G_OBJECT_CLASS (gum_callback_event_sink_parent_class)->finalize (object);
 }
