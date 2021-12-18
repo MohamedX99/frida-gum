@@ -90,7 +90,7 @@ gum_api_resolver_default_init (GumApiResolverInterface * iface)
  * gum_api_resolver_make:
  * @type: (not nullable): the resolver type to make
  *
- * Creates a new resolver of the given @type. Available resolvers:
+ * Creates a new resolver of the given `type`. Available resolvers:
  *
  *  - `module`: Resolves exported and imported functions of shared libraries
  *    currently loaded. Always available.
@@ -123,11 +123,12 @@ gum_api_resolver_make (const gchar * type)
  * @self: a resolver
  * @query: (not nullable): the query to perform
  * @func: (not nullable) (scope call): the function called with each match
- * @user_data: (nullable): the data to pass to @func
- * @error: the return location for a #GError
+ * @user_data: (nullable): the data to pass to `func`
+ * @error: (inout callee-allocates) (nullable) (optional): the return location
+ *   for a #GError
  *
- * Performs the resolver-specific @query, optionally suffixed with `/i` to
- * perform case-insensitive matching. Calls @func with each match found.
+ * Performs the resolver-specific `query`, optionally suffixed with `/i` to
+ * perform case-insensitive matching. Calls `func` with each match found.
  */
 void
 gum_api_resolver_enumerate_matches (GumApiResolver * self,
