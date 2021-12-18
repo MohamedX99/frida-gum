@@ -21,9 +21,9 @@
  * gum_backtracer_generate (backtracer, cpu_context, &retaddrs);
  *
  * for (guint i = 0; i != retaddrs.len; i++)
- * {
- *   g_print ("retaddrs[%u] = %p\n", i, retaddrs->items[i]);
- * }
+ *   {
+ *     g_print ("retaddrs[%u] = %p\n", i, retaddrs->items[i]);
+ *   }
  * ```
  */
 
